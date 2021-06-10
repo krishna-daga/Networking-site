@@ -1,8 +1,12 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-{% if empty%}
-<p>No posts yet!</p>
-{{posts}}
+{% if msg%}
+<p>{{msg}}</p>
 {% endif %}
+{% for post in posts %}
+<li>{{post.post}} {{post.user}} {{post.time}}
+{{post.like}}
+</li>
+{% endfor %}
 {% endblock %}

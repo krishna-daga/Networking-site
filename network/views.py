@@ -10,7 +10,15 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-    return render(request,"network/index.html")
+    #allposts=Posts.objects.values('post')
+    #will give a dictionary sort of result : {'post': ' I am excited to be making this project!'}
+    allposts=Posts.objects.all().order_by('-time')
+    if (len(allposts)==0):
+        msg="no posts available"
+        return render(request,"network/index.html",{"msg":msg})
+    else:
+        #print all posts
+        return render(request,"network/index.html",{"posts":allposts})
     
 @login_required(login_url='/login')
 def newpost(request):
@@ -22,7 +30,7 @@ def newpost(request):
         newpost.post=request.POST.get('post')
         #save it
         newpost.save()
-        return render(request,"network/index.html")
+        return HttpResponseRedirect(reverse(index))
     else:
         return render(request,"network/newpost.html")
 
